@@ -1,24 +1,24 @@
 namespace RegularNamespace {
-    public class ClassInRegularNamespace { }
+    public class RegularClass { }
 
-    public class ClassWithSameName { }
+    public class NameConflictClass { }
 }
 
-namespace OtherRegularNamespace {
-    public class ClassWithSameName { }
+namespace OtherNamespace {
+    public class NameConflictClass { }
 }
 
-namespace NamespaceWithStatic {
+namespace NamespaceForStatic {
     public class ClassForStatic {
         public static void StaticMethod() { }
-        public static void EnumMethod(EnumForStatic enumParams) { }
-
-        public class NestedClassForStatic { }
+        public static string stringFromStatic = "string form static";
+        public class NestedClass { }
     }
     public class OtherClassForStatic {
-        public static void StaticMethod(int parameter) { }
+        public static void StaticMethod(string parameter) { }
 
-        //public class NestedClassForStatic {} //If uncommented, ClassForStatic and OtherClassForStatic can't be used together
+        //public static string stringFromStatic = "other string form static"; //If uncommented, ClassForStatic and OtherClassForStatic can't be used together
+        //public class NestedClass {} //If uncommented, ClassForStatic and OtherClassForStatic can't be used together
     }
 
     public enum EnumForStatic {
@@ -28,3 +28,19 @@ namespace NamespaceWithStatic {
     }
 }
 
+namespace MainNamespace {
+    public class OtherClassInMainNamespace {
+        public static void StaticMethodInSameNamespace() { }
+    }
+}
+
+namespace NamespaceForGlobal {
+    public class ClassForGlobal { }
+    public class ExtraClassForGlobal { }
+}
+
+namespace NamespaceForStaticGlobal {
+    public class ClassForStaticGlobal {
+        public static void StaticGlobalMethod() { }
+    }
+}
