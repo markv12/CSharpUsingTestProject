@@ -1,0 +1,2 @@
+﻿global using NamespaceForGlobal;
+global using static NamespaceForStaticGlobal.ClassForStaticGlobal;
