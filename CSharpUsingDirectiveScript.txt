@@ -1,0 +1,142 @@
+Hey everyone, today I'd like to do a deep dive on the C# using directive.
+
+This is not to be confused with the using statement for disposable objects, which is totally unrelated.
+
+I'm talking about the lines like this that are at the top of just about every C# file.
+
+The basic using directive takes a namespace and includes the types within that namespace in the current file.
+
+You can then use any of those types without having to specify the full namespace path.
+
+A very common example of this is System.Collections.Generic.List
+
+Instead of having to type all of that out every time, you can add "using System.Collections.Generic" at the top of the file, and then just refer to "List" in your code.
+
+Before I go further, I'd like to clarify that the using directive is never strictly necessary.
+
+The list of namespaces you code has access to is controlled by your project's dependency configuration.
+
+If your project has access, You can always type out the entire namespace path to a type. This is called the "Fully Qualified Type Name"
+
+But this is often cumbersome, so most C# programs make use of the using directive.
+
+Usually, the basic using directive is all you need, but there are several other using features that can come in handy in specific situations.
+
+I've put together an example project that demos most of these features.
+
+Let's take a look.
+
+In the previous example we were using a namespace from the .Net Framework, but from now on I'll mostly be using namespaces I've defined myself to keep things simple.
+
+The example project is centered around a class called UsingTest that is contained within a namespace called "MainNamespace"
+
+
+First let's demonstrate the basic using directive again.
+
+I have namespace called "RegularNamespace" that contains a class called "RegularClass"
+
+In my test file I could refer to this class using its "Fully Qualified Type Name" RegularNamespace.RegularClass, but instead, let's add "using RegularNamespace" to the top of the file.
+
+Now we can refer to RegularClass directly.
+
+Note that the regular using directive can only be used to include an entire namespace, you can't include just a single type from a namespace like this:
+
+
+Now let's look at the first special case, the alias feature
+
+I have another namespace called OtherNamespace.
+
+It defines a class called NameConflictClass but RegularNamespace also defines a class with the exact same name.
+
+If we use both of these namespaces and try to refer to the class using only its name, we get an error because the system can't tell which of the two classes we meant to use.
+
+This is where the alias feature comes in.
+
+This line looks very similar to a regular using directive, but Instead of a namespace, the alias feature takes a "Fully Qualified Type Name"
+
+it then takes that single type and assigns it to the name on the left side of the equals
+
+The alias name has to be unique to that file and it will cover up anything else with that name in the file.
+
+We're still using RegularNamespace and so RegularNamespace.NameConflictClass is technically still around,
+
+but the alias takes precedence and so NameConflictClass will always resolve to OtherNamespace.NameConflictClass in this file.
+
+In this case we specifically want to use the alias to cover up another class, but the alias name can be anything you want.
+
+You can also use an alias to refer to a built in type.
+
+The right side of the equals must be a "Fully Qualified Type Name" and if it's a generic type like List, you must fill in any type parameters 
+
+
+Next let's look at the static using directive.
+
+again it looks deceptively similar to a regular using directive.
+
+Like the alias, it takes a "Fully Qualified Type Name" instead of a namespace.
+
+It then takes the static members and nested types of that type and adds them directly to the current file.
+
+I've definied a separate namespace for the things that we will add with the static using directive.
+
+First we have a class called ClassForStatic. It defines a static method, a static string variable, and a nested class.
+
+When we add this static using statement, those three items will be added to the test file.
+
+This feels very strange to me. We can refer to stringFromStatic, StaticMethod, and NestedClass as if they were defined directly in this file.
+
+Things get even stranger when we add another class with name conflicts.
+
+This second class also defines a method, variable, and class, with the same names as the first class members.
+
+Back in our test file we're adding both of them with using static
+
+Even though the two methods have the same name, if they have different parameters, they can be differentiated using method overloading.
+
+The variable and the class simply won't compile because we're trying to add both of them directly to the test file and there's no way to resolve the name conflicts.
+
+If you get a conflict like this with "using static" you will have to remove one of the "using static" directives and access that class with a regular using directive on the namespace;
+
+Using static also works with enums. This allows you to refer directly to the enum values with no prefix.
+
+This can create funny situations like this where we've added the enum values to the file, but we haven't added the enum itself to the file, so to refer to the enum we have to use the "Fully Qualified Type Name".
+
+
+This is just personal opinion, but I'm not really a fan of the "using static" directive
+
+It makes it hard for me to tell where things in my files are coming from.
+
+I think you could get most of the name shortening with regular using directives and aliases.
+
+If you have a good use case for "using static" let me know in the comments.
+
+
+At this point I'd like to draw attention to the scoping of the using directive.
+
+Using directives are scoped to the file meaning that if you have multiple classes in the same file, they will share the same usings, and interestingly, if you have a single class definied across multiple files using the partial keyword, each piece of the class can have a different set of usings.
+
+The one exception to file scoping is the global modifier that was added in C# 10
+
+it can be applied to any using directive and makes the directive apply to the entire project instead of the just that file
+
+Here I have a global using directive, a global static using directive, and a global alias.
+
+Back in our test file, these two classes and this method are being added to the test file by the global using directives.
+
+I can see how it could be nice for namespaces and types that you include in almost every file.
+
+Microsoft suggests keeping all of your global usings in a single file and that seems like a good idea to me. 
+
+
+And that covers just about everything there is to know about the using directive.
+
+The main thing I didn't really grasp until I made this video is that while regular using directives take whole namespaces,
+aliases and static using directives take just a single class or enum.
+
+check the description for a link to my example code. I would suggest downloading it and playing around with it.
+
+I've included additional examples for a few little edge cases that are hard to understand until you see them for yourself.
+
+Please like and subscribe and if you have any questions, let me know in the comments.
+
+Thanks for watching!
