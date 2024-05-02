@@ -56,7 +56,7 @@ This line looks very similar to a regular using directive, but Instead of a name
 
 it then takes that single type and assigns it to the name on the left side of the equals
 
-The alias name has to be unique to that file and it will cover up anything else with that name in the file.
+The alias name will cover up anything else with that name in the file.
 
 We're still using RegularNamespace and so RegularNamespace.NameConflictClass is technically still around,
 
@@ -77,7 +77,7 @@ Like the alias, it takes a "Fully Qualified Type Name" instead of a namespace.
 
 It then takes the static members and nested types of that type and adds them directly to the current file.
 
-I've definied a separate namespace for the things that we will add with the static using directive.
+I've defined a separate namespace for the things that we will add with the static using directive.
 
 First we have a class called ClassForStatic. It defines a static method, a static string variable, and a nested class.
 
@@ -113,7 +113,7 @@ If you have a good use case for "using static" let me know in the comments.
 
 At this point I'd like to draw attention to the scoping of the using directive.
 
-Using directives are scoped to the file meaning that if you have multiple classes in the same file, they will share the same usings, and interestingly, if you have a single class definied across multiple files using the partial keyword, each piece of the class can have a different set of usings.
+Using directives are scoped to the file meaning that if you have multiple classes in the same file, they will share the same usings, and interestingly, if you have a single class defined across multiple files using the partial keyword, each piece of the class can have a different set of usings.
 
 The one exception to file scoping is the global modifier that was added in C# 10
 
